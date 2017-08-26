@@ -28,5 +28,7 @@
 
 # Executables
 *.exe
+*.in
 *.out
 *.app
+*.bat
