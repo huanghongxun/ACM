@@ -32,3 +32,6 @@
 *.out
 *.app
 *.bat
+
+# Compiled Java byte codes
+*.class
