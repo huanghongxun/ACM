@@ -17,26 +17,27 @@ void add(int a, int b) {
 }
 
 void dfs(int now) {
-    cnt[now]=0;
+    int i, j, s;
+    cnt[now] = 0;
     if (!h[now]) {
         cnt[now] = 1;
         dp[now][1] = val[now];
         return;
     }
 
-    for (int i = h[now]; i; i = p[i]) {
+    for (i = h[now]; i; i = p[i]) {
         dfs(v[i]);
         cnt[now] += cnt[v[i]];
     }
 
-    cnt[now] = min(cnt[now],k);
+    cnt[now] = min(cnt[now], k);
 
-    for(int i=0;i<=cnt[now];i++) dp[now][i]=-1;
-        dp[now][0]=0;
+    FOR(i,0,cnt[now]) dp[now][i] = -1;
+    dp[now][0]=0;
 
-    for (int i = h[now]; i; i = p[i])
-        for (int j=cnt[now];j>=0;j--)
-            for (int s=0;s<=j&&s<=cnt[v[i]];s++)
+    for (i = h[now]; i; i = p[i])
+        for (j = cnt[now]; j >= 0; --j)
+            for (s = 0; s <= j && s <= cnt[v[i]]; ++s)
                 if (dp[v[i]][s] != -1 && dp[now][j - s] != -1)
                     dp[now][j] = max(dp[now][j], dp[v[i]][s] + dp[now][j-s]);
     dp[now][1] = max(val[now], dp[now][1]);

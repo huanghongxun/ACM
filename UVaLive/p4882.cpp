@@ -23,16 +23,26 @@ int process(int l, int r, int dep, int upperLevel) {
     }
 
     if (isalpha(str[l]) && str[l + 1] != '+') // multiplication, a(...) or ab
-        subl = l + 1, subr = r, operation = 2;
+        l1 = l, r1 = l, l2 = l + 1, r2 = r, operation = 2;
     else if (isalpha(str[r]) && str[r - 1] != '+') // multiplication, (...)a
-        subl = l, subr = r - 1, operation = 2;
+        l1 = l, r1 = r - 1, l2 = r, r2 = r, operation = 2;
     else {
         FOR(i,l,r) if (level[i] == dep) { // addition
-            operation = 1; break;
+            operation = 1;
+            l1 = l, r1 = i - 1, l2 = i + 1, r2 = r;
+            break;
         }
         if (operation == 0)
             throw exception("Cannot detect operation");
     }
+
+    int sub1 = process(l1, r1, dep + 1, operation);
+    int sub2 = process(l2, r2, dep + 1, operation);
+
+    if (parenthesis && operation >= upperLevel)
+        del[l] = del[r] = 1;
+
+    return operation;
 }
 
 int main() {
